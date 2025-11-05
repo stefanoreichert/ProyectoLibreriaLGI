@@ -31,10 +31,10 @@
         </div>
     </footer>
     
-    <script src="<?php echo $_SERVER['REQUEST_URI'] === '/ProyectoLibreriaLGI/' ? '' : '../'; ?>assets/js/main.js"></script>
-    <script src="<?php echo $_SERVER['REQUEST_URI'] === '/ProyectoLibreriaLGI/' ? '' : '../'; ?>assets/js/validaciones.js"></script>
+    <script src="/ProyectoLibreriaLGI/assets/js/main.js"></script>
+    <script src="/ProyectoLibreriaLGI/assets/js/validaciones.js"></script>
     <?php if (isset($include_search_js) && $include_search_js): ?>
-    <script src="<?php echo $_SERVER['REQUEST_URI'] === '/ProyectoLibreriaLGI/' ? '' : '../'; ?>assets/js/busquedas.js"></script>
+    <script src="/ProyectoLibreriaLGI/assets/js/busquedas.js"></script>
     <?php endif; ?>
 </body>
 </html>

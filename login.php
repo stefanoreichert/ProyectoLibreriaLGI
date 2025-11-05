@@ -10,14 +10,14 @@ if ($_POST) {
     
     if (!empty($usuario) && !empty($password)) {
         try {
-            $stmt = $pdo->prepare("SELECT id, usuario, password, nombre, rol FROM usuarios WHERE usuario = ? AND activo = 1");
+            $stmt = $pdo->prepare("SELECT id, usuario, password, nombre_completo, rol FROM usuarios WHERE usuario = ? AND activo = 1");
             $stmt->execute([$usuario]);
             $user = $stmt->fetch();
             
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['usuario'] = $user['usuario'];
-                $_SESSION['nombre'] = $user['nombre'];
+                $_SESSION['nombre'] = $user['nombre_completo'];
                 $_SESSION['rol'] = $user['rol'];
                 
                 header('Location: dashboard.php');

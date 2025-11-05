@@ -84,7 +84,7 @@ include '../includes/header.php';
             <div class="detail-grid">
                 <div class="detail-item">
                     <label>Nombre Completo:</label>
-                    <span><?php echo htmlspecialchars($usuario_data['nombre']); ?></span>
+                    <span><?php echo htmlspecialchars($usuario_data['nombre_completo']); ?></span>
                 </div>
                 
                 <div class="detail-item">

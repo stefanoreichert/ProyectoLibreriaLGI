@@ -14,7 +14,7 @@ INSERT INTO configuracion (clave, valor, descripcion, tipo, categoria) VALUES
 
 -- Insertar usuarios de prueba
 -- Contraseña para todos: password123 (hash)
-INSERT INTO usuarios (nombre, usuario, email, password, rol, telefono, documento, direccion) VALUES
+INSERT INTO usuarios (nombre_completo, usuario, email, password, rol, telefono, documento, direccion) VALUES
 ('Administrador Sistema', 'admin', 'admin@libreria-lgi.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', '+1 555-0001', '12345678', 'Av. Principal 123'),
 ('María Bibliotecaria', 'maria.bib', 'maria@libreria-lgi.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'bibliotecario', '+1 555-0002', '87654321', 'Calle Secundaria 456'),
 ('Juan Pérez', 'juan.perez', 'juan.perez@email.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'usuario', '+1 555-0101', '11111111', 'Calle Norte 789'),

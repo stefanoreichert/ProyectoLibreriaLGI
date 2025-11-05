@@ -96,7 +96,7 @@ include '../includes/header.php';
             <table class="detail-table">
                 <tr>
                     <td><strong>Nombre:</strong></td>
-                    <td><?php echo htmlspecialchars($usuario_data['nombre']); ?></td>
+                    <td><?php echo htmlspecialchars($usuario_data['nombre_completo']); ?></td>
                 </tr>
                 <tr>
                     <td><strong>Usuario:</strong></td>

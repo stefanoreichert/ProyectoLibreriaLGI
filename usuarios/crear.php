@@ -71,7 +71,7 @@ if ($_POST) {
         try {
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             
-            $sql = "INSERT INTO usuarios (nombre, usuario, email, password, rol, telefono, 
+            $sql = "INSERT INTO usuarios (nombre_completo, usuario, email, password, rol, telefono, 
                     documento, direccion, fecha_registro, activo) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), 1)";
             

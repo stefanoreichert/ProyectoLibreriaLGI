@@ -16,7 +16,7 @@ $where_clause = "WHERE u.activo = 1";
 $params = [];
 
 if (!empty($busqueda)) {
-    $where_clause .= " AND (u.nombre LIKE ? OR u.email LIKE ? OR u.telefono LIKE ? OR u.documento LIKE ?)";
+    $where_clause .= " AND (u.nombre_completo LIKE ? OR u.email LIKE ? OR u.telefono LIKE ? OR u.documento LIKE ?)";
     $busqueda_param = "%$busqueda%";
     $params = array_fill(0, 4, $busqueda_param);
 }
@@ -35,7 +35,7 @@ try {
             (SELECT COUNT(*) FROM prestamos p WHERE p.usuario_id = u.id) as total_prestamos
             FROM usuarios u 
             $where_clause 
-            ORDER BY u.nombre 
+            ORDER BY u.nombre_completo 
             LIMIT $registros_por_pagina OFFSET $offset";
     
     $stmt = $pdo->prepare($sql);
@@ -112,7 +112,7 @@ include '../includes/header.php';
                 <?php foreach ($usuarios as $usuario): ?>
                     <tr>
                         <td>
-                            <strong><?php echo htmlspecialchars($usuario['nombre']); ?></strong>
+                            <strong><?php echo htmlspecialchars($usuario['nombre_completo']); ?></strong>
                             <br><small class="text-muted">@<?php echo htmlspecialchars($usuario['usuario']); ?></small>
                         </td>
                         <td><?php echo htmlspecialchars($usuario['email']); ?></td>

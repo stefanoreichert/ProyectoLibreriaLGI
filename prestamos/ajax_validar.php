@@ -60,12 +60,12 @@ function buscarUsuarios() {
         return;
     }
     
-    $sql = "SELECT u.id, u.nombre, u.email, u.telefono,
+    $sql = "SELECT u.id, u.nombre_completo, u.email, u.telefono,
             (SELECT COUNT(*) FROM prestamos p WHERE p.usuario_id = u.id AND p.fecha_devolucion IS NULL) as prestamos_activos
             FROM usuarios u 
             WHERE u.activo = 1 
-            AND (u.nombre LIKE ? OR u.email LIKE ? OR u.documento LIKE ?)
-            ORDER BY u.nombre 
+            AND (u.nombre_completo LIKE ? OR u.email LIKE ? OR u.documento LIKE ?)
+            ORDER BY u.nombre_completo 
             LIMIT ?";
     
     $busqueda_param = "%$query%";
@@ -76,7 +76,7 @@ function buscarUsuarios() {
     while ($usuario = $stmt->fetch()) {
         $resultados[] = [
             'id' => $usuario['id'],
-            'nombre' => $usuario['nombre'],
+            'nombre' => $usuario['nombre_completo'],
             'email' => $usuario['email'],
             'telefono' => $usuario['telefono'],
             'prestamos_activos' => (int)$usuario['prestamos_activos'],
@@ -145,7 +145,7 @@ function getUsuario() {
     }
     
     $stmt = $pdo->prepare("
-        SELECT u.id, u.nombre, u.email, u.telefono,
+        SELECT u.id, u.nombre_completo, u.email, u.telefono,
         (SELECT COUNT(*) FROM prestamos p WHERE p.usuario_id = u.id AND p.fecha_devolucion IS NULL) as prestamos_activos
         FROM usuarios u 
         WHERE u.id = ? AND u.activo = 1
@@ -160,7 +160,7 @@ function getUsuario() {
     echo json_encode([
         'usuario' => [
             'id' => $usuario['id'],
-            'nombre' => $usuario['nombre'],
+            'nombre' => $usuario['nombre_completo'],
             'email' => $usuario['email'],
             'telefono' => $usuario['telefono'],
             'prestamos_activos' => (int)$usuario['prestamos_activos'],

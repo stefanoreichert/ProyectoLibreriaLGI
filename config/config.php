@@ -31,7 +31,7 @@ $config = [
     ],
     'database' => [
         'host' => 'localhost',
-        'name' => 'libreria_lgi',
+        'name' => 'libreria',
         'charset' => 'utf8mb4'
     ],
     'prestamos' => [

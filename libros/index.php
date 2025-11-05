@@ -44,6 +44,8 @@ try {
 } catch (PDOException $e) {
     $error = "Error al obtener los libros: " . $e->getMessage();
     $libros = [];
+    $total_registros = 0;
+    $total_paginas = 0;
 }
 
 include '../includes/header.php';

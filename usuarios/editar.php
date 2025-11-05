@@ -108,7 +108,7 @@ if ($_POST && $usuario_data) {
             if (!empty($password)) {
                 // Actualizar con nueva contraseña
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
-                $sql = "UPDATE usuarios SET nombre = ?, usuario = ?, email = ?, password = ?, 
+                $sql = "UPDATE usuarios SET nombre_completo = ?, usuario = ?, email = ?, password = ?, 
                         rol = ?, telefono = ?, documento = ?, direccion = ? WHERE id = ?";
                 $params = [
                     $nombre, $usuario, $email, $password_hash, $rol,
@@ -116,7 +116,7 @@ if ($_POST && $usuario_data) {
                 ];
             } else {
                 // Actualizar sin cambiar contraseña
-                $sql = "UPDATE usuarios SET nombre = ?, usuario = ?, email = ?, rol = ?, 
+                $sql = "UPDATE usuarios SET nombre_completo = ?, usuario = ?, email = ?, rol = ?, 
                         telefono = ?, documento = ?, direccion = ? WHERE id = ?";
                 $params = [
                     $nombre, $usuario, $email, $rol,
@@ -136,7 +136,7 @@ if ($_POST && $usuario_data) {
             
             // Actualizar sesión si es el usuario actual
             if ($usuario_id == $_SESSION['user_id']) {
-                $_SESSION['nombre'] = $usuario_data['nombre'];
+                $_SESSION['nombre'] = $usuario_data['nombre_completo'];
                 $_SESSION['usuario'] = $usuario_data['usuario'];
                 $_SESSION['rol'] = $usuario_data['rol'];
             }
@@ -188,7 +188,7 @@ include '../includes/header.php';
             <div class="form-group">
                 <label for="nombre">Nombre Completo *</label>
                 <input type="text" id="nombre" name="nombre" required 
-                       value="<?php echo htmlspecialchars($_POST['nombre'] ?? $usuario_data['nombre']); ?>">
+                       value="<?php echo htmlspecialchars($_POST['nombre'] ?? $usuario_data['nombre_completo']); ?>">
             </div>
             
             <div class="form-group">

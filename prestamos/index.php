@@ -34,7 +34,7 @@ switch ($filtro_estado) {
 
 // Filtro por búsqueda
 if (!empty($busqueda)) {
-    $where_conditions[] = "(l.titulo LIKE ? OR l.autor LIKE ? OR u.nombre LIKE ? OR l.isbn LIKE ?)";
+    $where_conditions[] = "(l.titulo LIKE ? OR l.autor LIKE ? OR u.nombre_completo LIKE ? OR l.isbn LIKE ?)";
     $busqueda_param = "%$busqueda%";
     $params = array_fill(0, 4, $busqueda_param);
 }
@@ -53,7 +53,7 @@ try {
     $total_paginas = ceil($total_registros / $registros_por_pagina);
     
     // Obtener préstamos
-    $sql = "SELECT p.*, l.titulo, l.autor, l.isbn, u.nombre as usuario_nombre,
+    $sql = "SELECT p.*, l.titulo, l.autor, l.isbn, u.nombre_completo as usuario_nombre,
             CASE 
                 WHEN p.fecha_devolucion IS NOT NULL THEN 'devuelto'
                 WHEN p.fecha_limite < CURDATE() THEN 'vencido'

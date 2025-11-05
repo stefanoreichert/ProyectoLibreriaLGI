@@ -79,11 +79,11 @@ function obtenerReporteGeneral($fecha_desde, $fecha_hasta) {
     
     // Usuarios más activos
     $sql_usuarios = "
-        SELECT u.nombre, u.email, COUNT(p.id) as prestamos
+        SELECT u.nombre_completo, u.email, COUNT(p.id) as prestamos
         FROM usuarios u
         JOIN prestamos p ON u.id = p.usuario_id
         WHERE p.fecha_prestamo BETWEEN ? AND ?
-        GROUP BY u.id, u.nombre, u.email
+        GROUP BY u.id, u.nombre_completo, u.email
         ORDER BY prestamos DESC
         LIMIT 10
     ";
@@ -142,7 +142,7 @@ function obtenerReporteUsuarios($fecha_desde, $fecha_hasta) {
     $sql = "
         SELECT 
             u.id,
-            u.nombre,
+            u.nombre_completo,
             u.email,
             u.telefono,
             u.rol,
@@ -168,7 +168,7 @@ function obtenerReportePrestamos($fecha_desde, $fecha_hasta) {
     $sql = "
         SELECT 
             p.id,
-            u.nombre as usuario,
+            u.nombre_completo as usuario,
             l.titulo as libro,
             l.autor,
             p.fecha_prestamo,
@@ -354,7 +354,7 @@ function obtenerReportePrestamos($fecha_desde, $fecha_hasta) {
                                                 <td>
                                                     <span class="ranking"><?php echo $index + 1; ?></span>
                                                 </td>
-                                                <td><?php echo htmlspecialchars($usuario['nombre']); ?></td>
+                                                <td><?php echo htmlspecialchars($usuario['nombre_completo']); ?></td>
                                                 <td><?php echo htmlspecialchars($usuario['email']); ?></td>
                                                 <td>
                                                     <span class="badge badge-info"><?php echo $usuario['prestamos']; ?></span>
@@ -459,7 +459,7 @@ function obtenerReportePrestamos($fecha_desde, $fecha_hasta) {
                                 <?php foreach ($datos as $usuario): ?>
                                     <tr>
                                         <td><?php echo $usuario['id']; ?></td>
-                                        <td><?php echo htmlspecialchars($usuario['nombre']); ?></td>
+                                        <td><?php echo htmlspecialchars($usuario['nombre_completo']); ?></td>
                                         <td><?php echo htmlspecialchars($usuario['email']); ?></td>
                                         <td><?php echo htmlspecialchars($usuario['telefono']); ?></td>
                                         <td>
