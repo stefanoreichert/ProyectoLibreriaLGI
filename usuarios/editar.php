@@ -3,8 +3,8 @@ session_start();
 require_once '../includes/auth.php';
 require_once '../config/database.php';
 
-// Verificar permisos
-if (!isBibliotecario()) {
+// Solo administradores pueden editar usuarios
+if (!isAdmin()) {
     header('Location: ../dashboard.php');
     exit();
 }
@@ -52,7 +52,7 @@ if ($_POST && $usuario_data) {
     $confirmar_password = $_POST['confirmar_password'] ?? '';
     $rol = $_POST['rol'] ?? 'usuario';
     $telefono = trim($_POST['telefono'] ?? '');
-    $documento = trim($_POST['documento'] ?? '');
+    $documento = trim($_POST['dni'] ?? '');
     $direccion = trim($_POST['direccion'] ?? '');
     
     // Validaciones básicas
@@ -109,15 +109,15 @@ if ($_POST && $usuario_data) {
                 // Actualizar con nueva contraseña
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
                 $sql = "UPDATE usuarios SET nombre_completo = ?, usuario = ?, email = ?, password = ?, 
-                        rol = ?, telefono = ?, documento = ?, direccion = ? WHERE id = ?";
+                        rol = ?, telefono = ?, dni = ?, direccion = ? WHERE id = ?";
                 $params = [
                     $nombre, $usuario, $email, $password_hash, $rol,
-                    $telefono ?: null, $documento ?: null, $direccion ?: null, $usuario_id
+                    $telefono ?: null, $dni ?: null, $direccion ?: null, $usuario_id
                 ];
             } else {
                 // Actualizar sin cambiar contraseña
                 $sql = "UPDATE usuarios SET nombre_completo = ?, usuario = ?, email = ?, rol = ?, 
-                        telefono = ?, documento = ?, direccion = ? WHERE id = ?";
+                        telefono = ?, dni = ?, direccion = ? WHERE id = ?";
                 $params = [
                     $nombre, $usuario, $email, $rol,
                     $telefono ?: null, $documento ?: null, $direccion ?: null, $usuario_id
@@ -204,9 +204,9 @@ include '../includes/header.php';
             </div>
             
             <div class="form-group">
-                <label for="documento">Documento de Identidad</label>
-                <input type="text" id="documento" name="documento" 
-                       value="<?php echo htmlspecialchars($_POST['documento'] ?? $usuario_data['documento']); ?>">
+                <label for="dni">Documento de Identidad</label>
+                <input type="text" id="dni" name="dni" 
+                       value="<?php echo htmlspecialchars($_POST['dni'] ?? $usuario_data['dni']); ?>">
             </div>
         </div>
         
@@ -265,8 +265,8 @@ include '../includes/header.php';
     <div class="user-info">
         <p><strong>Fecha de registro:</strong> <?php echo formatDateTime($usuario_data['fecha_registro']); ?></p>
         <p><strong>ID del usuario:</strong> #<?php echo $usuario_data['id']; ?></p>
-        <?php if ($usuario_data['ultima_actividad']): ?>
-            <p><strong>Última actividad:</strong> <?php echo formatDateTime($usuario_data['ultima_actividad']); ?></p>
+        <?php if ($usuario_data['estado']): ?>
+            <p><strong>Última actividad:</strong> <?php echo formatDateTime($usuario_data['estado']); ?></p>
         <?php endif; ?>
     </div>
     

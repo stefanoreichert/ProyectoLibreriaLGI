@@ -65,15 +65,15 @@ include '../includes/header.php';
 <div class="page-header">
     <h1>👤 Detalle del Usuario</h1>
     <div class="header-actions">
-        <?php if (isBibliotecario()): ?>
+        <?php if (isAdmin()): ?>
             <a href="editar.php?id=<?php echo $usuario_id; ?>" class="btn btn-secondary">
                 <span class="btn-icon">✏️</span>
                 Editar
             </a>
         <?php endif; ?>
-        <a href="index.php" class="btn btn-secondary">
+        <a href="<?php echo isBibliotecario() ? 'index.php' : '../dashboard.php'; ?>" class="btn btn-secondary">
             <span class="btn-icon">←</span>
-            Volver a Usuarios
+            Volver
         </a>
     </div>
 </div>
