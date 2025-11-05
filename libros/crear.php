@@ -13,11 +13,20 @@ $page_title = 'Crear Nuevo Libro';
 $errors = [];
 $success = '';
 
+// Verificar si hay mensaje de éxito de la redirección
+if (isset($_SESSION['success_message'])) {
+    $success = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
+}
+
 if ($_POST) {
     // Validar campos requeridos
     $titulo = trim($_POST['titulo'] ?? '');
     $autor = trim($_POST['autor'] ?? '');
     $isbn = trim($_POST['isbn'] ?? '');
+    // Limpiar ISBN: remover guiones y espacios
+    $isbn = preg_replace('/[\s\-]/', '', $isbn);
+    
     $categoria = trim($_POST['categoria'] ?? '');
     $stock = intval($_POST['stock'] ?? 0);
     $subtitulo = trim($_POST['subtitulo'] ?? '');
@@ -51,7 +60,7 @@ if ($_POST) {
     if (empty($errors)) {
         try {
             $sql = "INSERT INTO libros (titulo, subtitulo, autor, isbn, categoria, editorial, 
-                    año_publicacion, paginas, descripcion, stock, ubicacion, fecha_registro, activo) 
+                    ano_publicacion, paginas, descripcion, stock, ubicacion, fecha_registro, activo) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 1)";
             
             $stmt = $pdo->prepare($sql);
@@ -62,10 +71,10 @@ if ($_POST) {
                 $descripcion, $stock, $ubicacion
             ]);
             
-            $success = 'Libro creado exitosamente';
-            
-            // Limpiar formulario
-            $_POST = [];
+            // Redirigir después de crear exitosamente (patrón PRG)
+            $_SESSION['success_message'] = 'Libro creado exitosamente';
+            header('Location: crear.php');
+            exit();
             
         } catch (PDOException $e) {
             $errors[] = 'Error al crear el libro: ' . $e->getMessage();

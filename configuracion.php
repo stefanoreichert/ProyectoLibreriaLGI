@@ -1,13 +1,13 @@
 <?php
 session_start();
-require_once '../includes/auth.php';
-require_once '../config/database.php';
+require_once 'includes/auth.php';
+require_once 'config/database.php';
 
 verificarSesion();
 verificarRol(['admin']);
 
 $titulo = 'Configuración del Sistema';
-include '../includes/header.php';
+include 'includes/header.php';
 
 $mensaje = '';
 $error = '';
@@ -54,11 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 actualizado_por = VALUES(actualizado_por), 
                 fecha_actualizacion = VALUES(fecha_actualizacion)
             ");
-            $stmt->execute([$clave, $valor, $_SESSION['usuario_id']]);
+            $stmt->execute([$clave, $valor, $_SESSION['user_id']]);
         }
         
         // Registrar en logs
-        registrarLog($_SESSION['usuario_id'], 'configuracion', 'actualizar', 'Configuración del sistema actualizada');
+        registrarLog($_SESSION['user_id'], 'configuracion', 'actualizar', 'Configuración del sistema actualizada');
         
         $mensaje = 'Configuración actualizada correctamente';
         
@@ -272,7 +272,7 @@ $config = array_merge($configuraciones_defecto, $config_actual);
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-save"></i> Guardar Configuración
             </button>
-            <a href="../dashboard.php" class="btn btn-secondary">
+            <a href="dashboard.php" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> Volver al Dashboard
             </a>
             <button type="button" class="btn btn-warning" onclick="resetearConfiguracion()">
@@ -384,4 +384,4 @@ document.querySelector('.config-form').addEventListener('submit', function(e) {
 });
 </script>
 
-<?php include '../includes/footer.php'; ?>
+<?php include 'includes/footer.php'; ?>

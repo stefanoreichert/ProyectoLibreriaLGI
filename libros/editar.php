@@ -14,6 +14,12 @@ $errors = [];
 $success = '';
 $libro = null;
 
+// Verificar si hay mensaje de éxito de la redirección
+if (isset($_SESSION['success_message'])) {
+    $success = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
+}
+
 // Obtener ID del libro
 $libro_id = intval($_GET['id'] ?? 0);
 
@@ -41,6 +47,9 @@ if ($_POST && $libro) {
     $titulo = trim($_POST['titulo'] ?? '');
     $autor = trim($_POST['autor'] ?? '');
     $isbn = trim($_POST['isbn'] ?? '');
+    // Limpiar ISBN: remover guiones y espacios
+    $isbn = preg_replace('/[\s\-]/', '', $isbn);
+    
     $categoria = trim($_POST['categoria'] ?? '');
     $stock = intval($_POST['stock'] ?? 0);
     $subtitulo = trim($_POST['subtitulo'] ?? '');
@@ -74,7 +83,7 @@ if ($_POST && $libro) {
     if (empty($errors)) {
         try {
             $sql = "UPDATE libros SET titulo = ?, subtitulo = ?, autor = ?, isbn = ?, 
-                    categoria = ?, editorial = ?, año_publicacion = ?, paginas = ?, 
+                    categoria = ?, editorial = ?, ano_publicacion = ?, paginas = ?, 
                     descripcion = ?, stock = ?, ubicacion = ? WHERE id = ?";
             
             $stmt = $pdo->prepare($sql);
@@ -85,12 +94,10 @@ if ($_POST && $libro) {
                 $descripcion, $stock, $ubicacion, $libro_id
             ]);
             
-            $success = 'Libro actualizado exitosamente';
-            
-            // Recargar datos del libro
-            $stmt = $pdo->prepare("SELECT * FROM libros WHERE id = ?");
-            $stmt->execute([$libro_id]);
-            $libro = $stmt->fetch();
+            // Redirigir después de actualizar exitosamente (patrón PRG)
+            $_SESSION['success_message'] = 'Libro actualizado exitosamente';
+            header('Location: editar.php?id=' . $libro_id);
+            exit();
             
         } catch (PDOException $e) {
             $errors[] = 'Error al actualizar el libro: ' . $e->getMessage();
@@ -179,8 +186,8 @@ include '../includes/header.php';
         <div class="form-group">
             <label for="año_publicacion">Año de Publicación</label>
             <input type="number" id="año_publicacion" name="año_publicacion" 
-                   min="1000" max="<?php echo date('Y') + 1; ?>"
-                   value="<?php echo htmlspecialchars($_POST['año_publicacion'] ?? $libro['año_publicacion']); ?>">
+                   min="1900" max="<?php echo date('Y'); ?>" step="1"
+                   value="<?php echo htmlspecialchars($_POST['año_publicacion'] ?? $libro['ano_publicacion']); ?>">
         </div>
         
         <div class="form-group">

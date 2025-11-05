@@ -16,16 +16,22 @@ $offset = ($pagina - 1) * $registros_por_pagina;
 $where_conditions = [];
 $params = [];
 
+// Si es usuario normal, solo ver sus préstamos
+if ($_SESSION['rol'] === 'usuario') {
+    $where_conditions[] = "p.usuario_id = ?";
+    $params[] = $_SESSION['user_id'];
+}
+
 // Filtro por estado
 switch ($filtro_estado) {
     case 'activos':
-        $where_conditions[] = "p.fecha_devolucion IS NULL";
+        $where_conditions[] = "p.fecha_dev_real IS NULL";
         break;
     case 'vencidos':
-        $where_conditions[] = "p.fecha_devolucion IS NULL AND p.fecha_limite < CURDATE()";
+        $where_conditions[] = "p.fecha_dev_real IS NULL AND p.fecha_devolucion < CURDATE()";
         break;
     case 'devueltos':
-        $where_conditions[] = "p.fecha_devolucion IS NOT NULL";
+        $where_conditions[] = "p.fecha_dev_real IS NOT NULL";
         break;
     case 'todos':
         // Sin filtro adicional
@@ -36,7 +42,7 @@ switch ($filtro_estado) {
 if (!empty($busqueda)) {
     $where_conditions[] = "(l.titulo LIKE ? OR l.autor LIKE ? OR u.nombre_completo LIKE ? OR l.isbn LIKE ?)";
     $busqueda_param = "%$busqueda%";
-    $params = array_fill(0, 4, $busqueda_param);
+    $params = array_merge($params, array_fill(0, 4, $busqueda_param));
 }
 
 $where_clause = !empty($where_conditions) ? "WHERE " . implode(" AND ", $where_conditions) : "";
@@ -55,18 +61,18 @@ try {
     // Obtener préstamos
     $sql = "SELECT p.*, l.titulo, l.autor, l.isbn, u.nombre_completo as usuario_nombre,
             CASE 
-                WHEN p.fecha_devolucion IS NOT NULL THEN 'devuelto'
-                WHEN p.fecha_limite < CURDATE() THEN 'vencido'
+                WHEN p.fecha_dev_real IS NOT NULL THEN 'devuelto'
+                WHEN p.fecha_devolucion < CURDATE() THEN 'vencido'
                 ELSE 'activo'
             END as estado_prestamo,
-            DATEDIFF(CURDATE(), p.fecha_limite) as dias_vencido
+            DATEDIFF(CURDATE(), p.fecha_devolucion) as dias_vencido
             FROM prestamos p
             JOIN libros l ON p.libro_id = l.id
             JOIN usuarios u ON p.usuario_id = u.id
             $where_clause
             ORDER BY 
-                CASE WHEN p.fecha_devolucion IS NULL THEN 0 ELSE 1 END,
-                p.fecha_limite ASC,
+                CASE WHEN p.fecha_dev_real IS NULL THEN 0 ELSE 1 END,
+                p.fecha_devolucion ASC,
                 p.fecha_prestamo DESC
             LIMIT $registros_por_pagina OFFSET $offset";
     
@@ -77,9 +83,9 @@ try {
     // Obtener estadísticas generales
     $stats_sql = "SELECT 
         COUNT(*) as total,
-        SUM(CASE WHEN fecha_devolucion IS NULL THEN 1 ELSE 0 END) as activos,
-        SUM(CASE WHEN fecha_devolucion IS NULL AND fecha_limite < CURDATE() THEN 1 ELSE 0 END) as vencidos,
-        SUM(CASE WHEN fecha_devolucion IS NOT NULL THEN 1 ELSE 0 END) as devueltos
+        SUM(CASE WHEN fecha_dev_real IS NULL THEN 1 ELSE 0 END) as activos,
+        SUM(CASE WHEN fecha_dev_real IS NULL AND fecha_devolucion < CURDATE() THEN 1 ELSE 0 END) as vencidos,
+        SUM(CASE WHEN fecha_dev_real IS NOT NULL THEN 1 ELSE 0 END) as devueltos
         FROM prestamos";
     $stmt = $pdo->query($stats_sql);
     $estadisticas = $stmt->fetch();
@@ -94,16 +100,12 @@ include '../includes/header.php';
 ?>
 
 <div class="page-header">
-    <h1>📋 Gestión de Préstamos</h1>
+    <h1>📋 <?php echo $_SESSION['rol'] === 'usuario' ? 'Mis Préstamos' : 'Gestión de Préstamos'; ?></h1>
     <?php if (isBibliotecario()): ?>
         <div class="header-actions">
             <a href="nuevo.php" class="btn btn-primary">
                 <span class="btn-icon">➕</span>
                 Nuevo Préstamo
-            </a>
-            <a href="devolver.php" class="btn btn-success">
-                <span class="btn-icon">↩️</span>
-                Devolver Libro
             </a>
         </div>
     <?php endif; ?>
@@ -199,7 +201,7 @@ include '../includes/header.php';
                         <td><?php echo htmlspecialchars($prestamo['usuario_nombre']); ?></td>
                         <td><?php echo formatDate($prestamo['fecha_prestamo']); ?></td>
                         <td>
-                            <?php echo formatDate($prestamo['fecha_limite']); ?>
+                            <?php echo formatDate($prestamo['fecha_devolucion']); ?>
                             <?php if ($prestamo['estado_prestamo'] === 'vencido'): ?>
                                 <br><small class="text-danger">
                                     (<?php echo $prestamo['dias_vencido']; ?> días vencido)
@@ -207,7 +209,7 @@ include '../includes/header.php';
                             <?php endif; ?>
                         </td>
                         <td>
-                            <?php echo $prestamo['fecha_devolucion'] ? formatDate($prestamo['fecha_devolucion']) : '-'; ?>
+                            <?php echo $prestamo['fecha_dev_real'] ? formatDate($prestamo['fecha_dev_real']) : '-'; ?>
                         </td>
                         <td>
                             <?php
@@ -233,7 +235,7 @@ include '../includes/header.php';
                             </span>
                         </td>
                         <td class="actions">
-                            <?php if ($prestamo['fecha_devolucion'] === null && isBibliotecario()): ?>
+                            <?php if ($prestamo['fecha_dev_real'] === null && isBibliotecario()): ?>
                                 <a href="devolver.php?id=<?php echo $prestamo['id']; ?>" 
                                    class="btn btn-sm btn-success" title="Devolver">
                                     ↩️

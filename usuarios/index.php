@@ -3,6 +3,12 @@ session_start();
 require_once '../includes/auth.php';
 require_once '../config/database.php';
 
+// Solo bibliotecarios y admins pueden ver la lista de usuarios
+if (!isBibliotecario()) {
+    header('Location: ../dashboard.php');
+    exit();
+}
+
 $page_title = 'Gestión de Usuarios';
 
 // Parámetros de búsqueda y paginación
@@ -52,7 +58,7 @@ include '../includes/header.php';
 
 <div class="page-header">
     <h1>👥 Gestión de Usuarios</h1>
-    <?php if (isBibliotecario()): ?>
+    <?php if (isAdmin()): ?>
         <a href="crear.php" class="btn btn-primary">
             <span class="btn-icon">➕</span>
             Nuevo Usuario
@@ -117,7 +123,7 @@ include '../includes/header.php';
                         </td>
                         <td><?php echo htmlspecialchars($usuario['email']); ?></td>
                         <td><?php echo htmlspecialchars($usuario['telefono'] ?: 'N/A'); ?></td>
-                        <td><?php echo htmlspecialchars($usuario['documento'] ?: 'N/A'); ?></td>
+                        <td><?php echo htmlspecialchars($usuario['dni'] ?: 'N/A'); ?></td>
                         <td>
                             <span class="role-badge role-<?php echo $usuario['rol']; ?>">
                                 <?php echo ucfirst($usuario['rol']); ?>
@@ -141,7 +147,7 @@ include '../includes/header.php';
                             <a href="detalle.php?id=<?php echo $usuario['id']; ?>" class="btn btn-sm btn-info" title="Ver detalle">
                                 👁️
                             </a>
-                            <?php if (isBibliotecario()): ?>
+                            <?php if (isAdmin()): ?>
                                 <a href="editar.php?id=<?php echo $usuario['id']; ?>" class="btn btn-sm btn-secondary" title="Editar">
                                     ✏️
                                 </a>

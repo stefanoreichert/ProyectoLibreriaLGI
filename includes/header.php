@@ -37,10 +37,13 @@ $base_path = '/ProyectoLibreriaLGI/';
                         Libros
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="<?php echo $base_path; ?>libros/">Ver todos</a></li>
+                        <li><a href="<?php echo $base_path; ?>libros/">Ver catálogo</a></li>
+                        <?php if (isBibliotecario()): ?>
                         <li><a href="<?php echo $base_path; ?>libros/crear.php">Agregar nuevo</a></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
+                <?php if (isBibliotecario()): ?>
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle">
                         <i class="fas fa-users nav-icon"></i>
@@ -48,21 +51,27 @@ $base_path = '/ProyectoLibreriaLGI/';
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="<?php echo $base_path; ?>usuarios/">Ver todos</a></li>
+                        <?php if (isAdmin()): ?>
                         <li><a href="<?php echo $base_path; ?>usuarios/crear.php">Crear usuario</a></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
+                <?php endif; ?>
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle">
                         <i class="fas fa-handshake nav-icon"></i>
                         Préstamos
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="<?php echo $base_path; ?>prestamos/">Préstamos activos</a></li>
-                        <li><a href="<?php echo $base_path; ?>prestamos/nuevo.php">Nuevo préstamo</a></li>
+                        <li><a href="<?php echo $base_path; ?>prestamos/">Mis préstamos</a></li>
+                        <li><a href="<?php echo $base_path; ?>prestamos/solicitar.php">Solicitar préstamo</a></li>
+                        <?php if (isBibliotecario()): ?>
+                        <li><a href="<?php echo $base_path; ?>prestamos/nuevo.php">Gestionar préstamos</a></li>
                         <li><a href="<?php echo $base_path; ?>reportes.php">Reportes</a></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
-                <?php if ($_SESSION['rol'] === 'admin'): ?>
+                <?php if (isAdmin()): ?>
                 <li class="nav-item">
                     <a href="<?php echo $base_path; ?>configuracion.php" class="nav-link">
                         <i class="fas fa-cog nav-icon"></i>
@@ -75,7 +84,13 @@ $base_path = '/ProyectoLibreriaLGI/';
             <div class="nav-user">
                 <div class="user-info">
                     <i class="fas fa-user user-icon"></i>
-                    <span class="user-name"><?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
+                    <span class="user-name">
+                        <a href="<?php echo $base_path; ?>usuarios/detalle.php?id=<?php echo $_SESSION['user_id']; ?>" 
+                           style="color: inherit; text-decoration: none;" 
+                           title="Ver mi perfil">
+                            <?php echo htmlspecialchars($_SESSION['nombre']); ?>
+                        </a>
+                    </span>
                 </div>
                 <a href="<?php echo $base_path; ?>logout.php" class="logout-btn">
                     <i class="fas fa-sign-out-alt logout-icon"></i>

@@ -3,8 +3,8 @@ session_start();
 require_once '../includes/auth.php';
 require_once '../config/database.php';
 
-// Verificar permisos
-if (!isBibliotecario()) {
+// Solo administradores pueden crear usuarios
+if (!isAdmin()) {
     header('Location: ../dashboard.php');
     exit();
 }

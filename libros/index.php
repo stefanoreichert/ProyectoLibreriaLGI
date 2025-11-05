@@ -52,11 +52,13 @@ include '../includes/header.php';
 ?>
 
 <div class="page-header">
-    <h1>📚 Gestión de Libros</h1>
+    <h1>📚 <?php echo $_SESSION['rol'] === 'usuario' ? 'Catálogo de Libros' : 'Gestión de Libros'; ?></h1>
+    <?php if (isBibliotecario()): ?>
     <a href="crear.php" class="btn btn-primary">
         <span class="btn-icon">➕</span>
         Agregar Libro
     </a>
+    <?php endif; ?>
 </div>
 
 <!-- Barra de búsqueda -->
@@ -133,14 +135,21 @@ include '../includes/header.php';
                             <?php endif; ?>
                         </td>
                         <td class="actions">
+                            <?php if ($libro['stock'] > $libro['prestado']): ?>
+                                <a href="../prestamos/solicitar.php?libro_id=<?php echo $libro['id']; ?>" 
+                                   class="btn btn-sm btn-primary" title="Solicitar préstamo">
+                                    📋 Solicitar
+                                </a>
+                            <?php endif; ?>
+                            
+                            <?php if (isBibliotecario()): ?>
                             <a href="editar.php?id=<?php echo $libro['id']; ?>" class="btn btn-sm btn-secondary" title="Editar">
                                 ✏️
                             </a>
-                            <?php if (isAdmin()): ?>
-                                <a href="eliminar.php?id=<?php echo $libro['id']; ?>" class="btn btn-sm btn-danger" 
-                                   title="Eliminar" onclick="return confirm('¿Está seguro de eliminar este libro?')">
-                                    🗑️
-                                </a>
+                            <a href="eliminar.php?id=<?php echo $libro['id']; ?>" class="btn btn-sm btn-danger" 
+                               title="Eliminar" onclick="return confirm('¿Está seguro de eliminar este libro?')">
+                                🗑️
+                            </a>
                             <?php endif; ?>
                         </td>
                     </tr>

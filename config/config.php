@@ -1,5 +1,5 @@
 <?php
-// Configuraciones generales del sistema
+// Configuraciones generales del sistema para la librería
 define('SITE_NAME', 'Sistema de Librería LGI');
 define('SITE_VERSION', '1.0.0');
 define('DEVELOPED_BY', 'Equipo LGI');
@@ -21,7 +21,7 @@ define('MAX_FILE_SIZE', 2097152); // 2MB en bytes
 // Configuraciones de seguridad
 define('SESSION_TIMEOUT', 7200); // 2 horas en segundos
 
-// Configuraciones de la aplicación
+//esto hace que la configuracion sea un array multidimensional para facilitar su acceso
 $config = [
     'app' => [
         'name' => SITE_NAME,
