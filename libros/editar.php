@@ -14,6 +14,12 @@ $errors = [];
 $success = '';
 $libro = null;
 
+// Verificar si hay mensaje de éxito de la redirección
+if (isset($_SESSION['success_message'])) {
+    $success = $_SESSION['success_message'];
+    unset($_SESSION['success_message']);
+}
+
 // Obtener ID del libro
 $libro_id = intval($_GET['id'] ?? 0);
 
@@ -41,6 +47,9 @@ if ($_POST && $libro) {
     $titulo = trim($_POST['titulo'] ?? '');
     $autor = trim($_POST['autor'] ?? '');
     $isbn = trim($_POST['isbn'] ?? '');
+    // Limpiar ISBN: remover guiones y espacios
+    $isbn = preg_replace('/[\s\-]/', '', $isbn);
+    
     $categoria = trim($_POST['categoria'] ?? '');
     $stock = intval($_POST['stock'] ?? 0);
     $subtitulo = trim($_POST['subtitulo'] ?? '');
@@ -85,12 +94,10 @@ if ($_POST && $libro) {
                 $descripcion, $stock, $ubicacion, $libro_id
             ]);
             
-            $success = 'Libro actualizado exitosamente';
-            
-            // Recargar datos del libro
-            $stmt = $pdo->prepare("SELECT * FROM libros WHERE id = ?");
-            $stmt->execute([$libro_id]);
-            $libro = $stmt->fetch();
+            // Redirigir después de actualizar exitosamente (patrón PRG)
+            $_SESSION['success_message'] = 'Libro actualizado exitosamente';
+            header('Location: editar.php?id=' . $libro_id);
+            exit();
             
         } catch (PDOException $e) {
             $errors[] = 'Error al actualizar el libro: ' . $e->getMessage();

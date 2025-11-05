@@ -77,12 +77,12 @@ function validateFormFields(form) {
         }
     });
     
-    // Validar ISBNs
+    // Validar ISBNs (solo formato básico, no dígito de control)
     const isbnFields = form.querySelectorAll('input[name="isbn"]');
     isbnFields.forEach(field => {
-        if (field.value && !validateISBN(field.value)) {
+        if (field.value && !validateISBNFormat(field.value)) {
             isValid = false;
-            addFieldError(field, 'Ingrese un ISBN válido');
+            addFieldError(field, 'El ISBN debe tener 10 o 13 dígitos');
         }
     });
     
@@ -170,6 +170,20 @@ function validateISBN(isbn) {
     }
     
     return false;
+}
+
+// Validación de formato simple (solo longitud)
+function validateISBNFormat(isbn) {
+    // Remover guiones y espacios
+    const cleanISBN = isbn.replace(/[-\s]/g, '');
+    
+    // Verificar que solo contenga números (y X para ISBN-10)
+    if (!/^[\dX]+$/.test(cleanISBN)) {
+        return false;
+    }
+    
+    // Aceptar ISBNs de 10 o 13 dígitos
+    return cleanISBN.length === 10 || cleanISBN.length === 13;
 }
 
 function validateISBN10(isbn) {
@@ -268,13 +282,13 @@ function initRealTimeValidations() {
         });
     });
     
-    // ISBN en tiempo real
+    // ISBN en tiempo real (solo formato, no dígito de control)
     const isbnFields = document.querySelectorAll('input[name="isbn"]');
     isbnFields.forEach(field => {
         field.addEventListener('blur', function() {
             clearFieldError(this);
-            if (this.value && !validateISBN(this.value)) {
-                addFieldError(this, 'Ingrese un ISBN válido (10 o 13 dígitos)');
+            if (this.value && !validateISBNFormat(this.value)) {
+                addFieldError(this, 'El ISBN debe tener 10 o 13 dígitos');
             }
         });
     });
@@ -290,13 +304,8 @@ function initFieldFormatting() {
         });
     });
     
-    // Formatear ISBNs
-    const isbnFields = document.querySelectorAll('input[name="isbn"]');
-    isbnFields.forEach(field => {
-        field.addEventListener('input', function() {
-            this.value = formatISBN(this.value);
-        });
-    });
+    // NO formatear ISBNs automáticamente - dejar que el usuario escriba libremente
+    // Los ISBNs se pueden escribir con o sin guiones
     
     // Solo números en campos numéricos
     const numericFields = document.querySelectorAll('input[data-numeric-only]');
