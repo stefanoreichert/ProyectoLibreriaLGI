@@ -29,7 +29,7 @@ include 'includes/header.php';
 ?>
 
 <div class="dashboard">
-    <div class="welcome-section">
+    <div class="welcome-section dark">
         <h1>Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre']); ?></h1>
         <p>Sistema de Gestión de Librería - Panel de Control</p>
     </div>
