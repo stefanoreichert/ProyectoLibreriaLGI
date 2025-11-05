@@ -75,21 +75,35 @@ include 'includes/header.php';
     <div class="quick-actions">
         <h2>Acciones Rápidas</h2>
         <div class="actions-grid">
+            <?php if (isBibliotecario()): ?>
             <a href="libros/crear.php" class="action-btn">
                 <span class="action-icon">➕</span>
                 <span>Agregar Libro</span>
             </a>
+            <?php endif; ?>
+            
+            <?php if (isAdmin()): ?>
             <a href="usuarios/crear.php" class="action-btn">
                 <span class="action-icon">👤</span>
                 <span>Nuevo Usuario</span>
             </a>
+            <?php endif; ?>
+            
+            <?php if (isBibliotecario()): ?>
             <a href="prestamos/nuevo.php" class="action-btn">
                 <span class="action-icon">📋</span>
                 <span>Nuevo Préstamo</span>
             </a>
-            <a href="prestamos/devolver.php" class="action-btn">
-                <span class="action-icon">↩️</span>
-                <span>Registrar Devolución</span>
+            <?php endif; ?>
+            
+            <a href="libros/" class="action-btn">
+                <span class="action-icon">📚</span>
+                <span>Ver Catálogo</span>
+            </a>
+            
+            <a href="prestamos/" class="action-btn">
+                <span class="action-icon">📖</span>
+                <span><?php echo $_SESSION['rol'] === 'usuario' ? 'Mis Préstamos' : 'Todos los Préstamos'; ?></span>
             </a>
         </div>
     </div>

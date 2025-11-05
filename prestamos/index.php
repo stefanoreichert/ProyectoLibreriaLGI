@@ -16,6 +16,12 @@ $offset = ($pagina - 1) * $registros_por_pagina;
 $where_conditions = [];
 $params = [];
 
+// Si es usuario normal, solo ver sus préstamos
+if ($_SESSION['rol'] === 'usuario') {
+    $where_conditions[] = "p.usuario_id = ?";
+    $params[] = $_SESSION['user_id'];
+}
+
 // Filtro por estado
 switch ($filtro_estado) {
     case 'activos':
@@ -36,7 +42,7 @@ switch ($filtro_estado) {
 if (!empty($busqueda)) {
     $where_conditions[] = "(l.titulo LIKE ? OR l.autor LIKE ? OR u.nombre_completo LIKE ? OR l.isbn LIKE ?)";
     $busqueda_param = "%$busqueda%";
-    $params = array_fill(0, 4, $busqueda_param);
+    $params = array_merge($params, array_fill(0, 4, $busqueda_param));
 }
 
 $where_clause = !empty($where_conditions) ? "WHERE " . implode(" AND ", $where_conditions) : "";
@@ -94,16 +100,12 @@ include '../includes/header.php';
 ?>
 
 <div class="page-header">
-    <h1>📋 Gestión de Préstamos</h1>
+    <h1>📋 <?php echo $_SESSION['rol'] === 'usuario' ? 'Mis Préstamos' : 'Gestión de Préstamos'; ?></h1>
     <?php if (isBibliotecario()): ?>
         <div class="header-actions">
             <a href="nuevo.php" class="btn btn-primary">
                 <span class="btn-icon">➕</span>
                 Nuevo Préstamo
-            </a>
-            <a href="devolver.php" class="btn btn-success">
-                <span class="btn-icon">↩️</span>
-                Devolver Libro
             </a>
         </div>
     <?php endif; ?>

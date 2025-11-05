@@ -3,6 +3,12 @@ session_start();
 require_once '../includes/auth.php';
 require_once '../config/database.php';
 
+// Solo bibliotecarios y admins pueden ver la lista de usuarios
+if (!isBibliotecario()) {
+    header('Location: ../dashboard.php');
+    exit();
+}
+
 $page_title = 'Gestión de Usuarios';
 
 // Parámetros de búsqueda y paginación

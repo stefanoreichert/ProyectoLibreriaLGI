@@ -14,6 +14,12 @@ if ($usuario_id <= 0) {
     exit();
 }
 
+// Verificar permisos: usuarios normales solo pueden ver su propio perfil
+if ($_SESSION['rol'] === 'usuario' && $usuario_id != $_SESSION['user_id']) {
+    header('Location: detalle.php?id=' . $_SESSION['user_id']);
+    exit();
+}
+
 // Obtener datos del usuario
 try {
     $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE id = ? AND activo = 1");

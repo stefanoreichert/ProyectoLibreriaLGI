@@ -3,8 +3,8 @@ session_start();
 require_once '../includes/auth.php';
 require_once '../config/database.php';
 
-// Solo administradores pueden eliminar libros
-if (!isAdmin()) {
+// Solo bibliotecarios y administradores pueden eliminar libros
+if (!isBibliotecario()) {
     header('Location: ../dashboard.php');
     exit();
 }

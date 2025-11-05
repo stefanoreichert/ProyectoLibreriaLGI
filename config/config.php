@@ -21,7 +21,7 @@ define('MAX_FILE_SIZE', 2097152); // 2MB en bytes
 // Configuraciones de seguridad
 define('SESSION_TIMEOUT', 7200); // 2 horas en segundos
 
-// Configuraciones de la aplicación
+//esto hace que la configuracion sea un array multidimensional para facilitar su acceso
 $config = [
     'app' => [
         'name' => SITE_NAME,
