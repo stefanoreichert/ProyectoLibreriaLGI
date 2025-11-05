@@ -30,7 +30,7 @@ include 'includes/header.php';
 
 <div class="dashboard">
     <div class="welcome-section dark">
-        <h1>Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre']); ?></h1>
+                <h1 style="color: #2c3e50 !important; background: rgba(255,255,255,0.15) !important; padding: 12px 20px !important; border-radius: 25px !important; display: inline-block !important; text-shadow: 0 1px 3px rgba(255,255,255,0.8) !important; backdrop-filter: blur(10px) !important; border: 1px solid rgba(255,255,255,0.3) !important;">Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre']); ?></h1>
         <p>Sistema de Gestión de Librería - Panel de Control</p>
     </div>
     

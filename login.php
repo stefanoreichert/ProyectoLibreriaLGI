@@ -14,7 +14,8 @@ if ($_POST) {
             $stmt->execute([$usuario]);
             $user = $stmt->fetch();
             
-            if ($user && password_verify($password, $user['password'])) {
+            // Comparación directa de contraseña (texto plano - SOLO DESARROLLO)
+            if ($user && $user['password'] === $password) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['usuario'] = $user['usuario'];
                 $_SESSION['nombre'] = $user['nombre_completo'];
@@ -69,6 +70,10 @@ if ($_POST) {
                 
                 <button type="submit" class="btn btn-primary btn-full">Iniciar Sesión</button>
             </form>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <p>¿No tienes una cuenta? <a href="registro.php" style="color: #3498db; font-weight: 500;">Regístrate aquí</a></p>
+            </div>
             
             <div class="login-footer">
                 <p>Sistema de Gestión de Librería - LGI 2025</p>

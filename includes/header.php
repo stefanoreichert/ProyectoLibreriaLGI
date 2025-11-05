@@ -10,8 +10,8 @@ $base_path = '/ProyectoLibreriaLGI/';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo isset($page_title) ? $page_title . ' - ' : ''; ?><?php echo SITE_NAME; ?></title>
-    <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/style.css">
-    <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/dashboard.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/dashboard.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" type="image/png" href="<?php echo $base_path; ?>assets/img/logo.png">
 </head>
@@ -76,7 +76,6 @@ $base_path = '/ProyectoLibreriaLGI/';
                 <div class="user-info">
                     <i class="fas fa-user user-icon"></i>
                     <span class="user-name"><?php echo htmlspecialchars($_SESSION['nombre']); ?></span>
-                    <span class="user-role">(<?php echo htmlspecialchars($_SESSION['rol']); ?>)</span>
                 </div>
                 <a href="<?php echo $base_path; ?>logout.php" class="logout-btn">
                     <i class="fas fa-sign-out-alt logout-icon"></i>
