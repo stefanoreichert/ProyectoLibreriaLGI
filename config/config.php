@@ -1,5 +1,5 @@
 <?php
-// Configuraciones generales del sistema
+// Configuraciones generales del sistema para la librería
 define('SITE_NAME', 'Sistema de Librería LGI');
 define('SITE_VERSION', '1.0.0');
 define('DEVELOPED_BY', 'Equipo LGI');

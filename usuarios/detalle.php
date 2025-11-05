@@ -35,8 +35,8 @@ try {
     $stmt = $pdo->prepare("
         SELECT 
             COUNT(*) as total_prestamos,
-            SUM(CASE WHEN fecha_devolucion IS NULL THEN 1 ELSE 0 END) as prestamos_activos,
-            SUM(CASE WHEN fecha_devolucion IS NULL AND fecha_limite < CURDATE() THEN 1 ELSE 0 END) as prestamos_vencidos
+            SUM(CASE WHEN fecha_dev_real IS NULL THEN 1 ELSE 0 END) as prestamos_activos,
+            SUM(CASE WHEN fecha_dev_real IS NULL AND fecha_devolucion < CURDATE() THEN 1 ELSE 0 END) as prestamos_vencidos
         FROM prestamos 
         WHERE usuario_id = ?
     ");
@@ -105,7 +105,7 @@ include '../includes/header.php';
                 
                 <div class="detail-item">
                     <label>Documento:</label>
-                    <span><?php echo htmlspecialchars($usuario_data['documento'] ?: 'No registrado'); ?></span>
+                    <span><?php echo htmlspecialchars($usuario_data['dni'] ?: 'No registrado'); ?></span>
                 </div>
                 
                 <div class="detail-item full-width">
@@ -134,11 +134,6 @@ include '../includes/header.php';
                 <div class="detail-item">
                     <label>Fecha de Registro:</label>
                     <span><?php echo formatDateTime($usuario_data['fecha_registro']); ?></span>
-                </div>
-                
-                <div class="detail-item">
-                    <label>Última Actividad:</label>
-                    <span><?php echo $usuario_data['ultima_actividad'] ? formatDateTime($usuario_data['ultima_actividad']) : 'Nunca'; ?></span>
                 </div>
             </div>
         </div>
@@ -193,14 +188,14 @@ include '../includes/header.php';
                                         </small>
                                     </td>
                                     <td><?php echo formatDate($prestamo['fecha_prestamo']); ?></td>
-                                    <td><?php echo formatDate($prestamo['fecha_limite']); ?></td>
+                                    <td><?php echo formatDate($prestamo['fecha_devolucion']); ?></td>
                                     <td>
-                                        <?php echo $prestamo['fecha_devolucion'] ? formatDate($prestamo['fecha_devolucion']) : '-'; ?>
+                                        <?php echo $prestamo['fecha_dev_real'] ? formatDate($prestamo['fecha_dev_real']) : '-'; ?>
                                     </td>
                                     <td>
-                                        <?php if ($prestamo['fecha_devolucion']): ?>
+                                        <?php if ($prestamo['fecha_dev_real']): ?>
                                             <span class="status-badge status-returned">Devuelto</span>
-                                        <?php elseif ($prestamo['fecha_limite'] < date('Y-m-d')): ?>
+                                        <?php elseif ($prestamo['fecha_devolucion'] < date('Y-m-d')): ?>
                                             <span class="status-badge status-overdue">Vencido</span>
                                         <?php else: ?>
                                             <span class="status-badge status-active">Activo</span>

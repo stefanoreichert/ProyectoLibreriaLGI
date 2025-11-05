@@ -40,7 +40,7 @@ if ($_POST) {
             // Verificar que el libro existe y está disponible
             $stmt = $pdo->prepare("
                 SELECT l.id, l.titulo, l.stock,
-                (SELECT COUNT(*) FROM prestamos p WHERE p.libro_id = l.id AND p.fecha_devolucion IS NULL) as prestados
+                (SELECT COUNT(*) FROM prestamos p WHERE p.libro_id = l.id AND p.fecha_dev_real IS NULL) as prestados
                 FROM libros l 
                 WHERE l.id = ? AND l.activo = 1
             ");
@@ -53,7 +53,7 @@ if ($_POST) {
             }
             
             // Verificar límite de libros por usuario
-            $stmt = $pdo->prepare("SELECT COUNT(*) FROM prestamos WHERE usuario_id = ? AND fecha_devolucion IS NULL");
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM prestamos WHERE usuario_id = ? AND fecha_dev_real IS NULL");
             $stmt->execute([$usuario_id]);
             $prestamos_activos = $stmt->fetchColumn();
             if ($prestamos_activos >= MAX_LIBROS_POR_USUARIO) {
@@ -61,7 +61,7 @@ if ($_POST) {
             }
             
             // Verificar que el usuario no tenga el mismo libro prestado
-            $stmt = $pdo->prepare("SELECT COUNT(*) FROM prestamos WHERE usuario_id = ? AND libro_id = ? AND fecha_devolucion IS NULL");
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM prestamos WHERE usuario_id = ? AND libro_id = ? AND fecha_dev_real IS NULL");
             $stmt->execute([$usuario_id, $libro_id]);
             if ($stmt->fetchColumn() > 0) {
                 $errors[] = 'El usuario ya tiene este libro prestado';
@@ -75,13 +75,13 @@ if ($_POST) {
     // Si no hay errores, crear el préstamo
     if (empty($errors)) {
         try {
-            $fecha_limite = date('Y-m-d', strtotime("+$dias_prestamo days"));
+            $fecha_devolucion_limite = date('Y-m-d', strtotime("+$dias_prestamo days"));
             
-            $sql = "INSERT INTO prestamos (usuario_id, libro_id, fecha_prestamo, fecha_limite, observaciones, creado_por) 
-                    VALUES (?, ?, CURDATE(), ?, ?, ?)";
+            $sql = "INSERT INTO prestamos (usuario_id, libro_id, fecha_devolucion, observaciones) 
+                    VALUES (?, ?, ?, ?)";
             
             $stmt = $pdo->prepare($sql);
-            $stmt->execute([$usuario_id, $libro_id, $fecha_limite, $observaciones, $_SESSION['user_id']]);
+            $stmt->execute([$usuario_id, $libro_id, $fecha_devolucion_limite, $observaciones]);
             
             $prestamo_id = $pdo->lastInsertId();
             $success = "Préstamo creado exitosamente. ID: #$prestamo_id";

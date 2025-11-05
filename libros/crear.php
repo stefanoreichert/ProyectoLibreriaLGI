@@ -51,7 +51,7 @@ if ($_POST) {
     if (empty($errors)) {
         try {
             $sql = "INSERT INTO libros (titulo, subtitulo, autor, isbn, categoria, editorial, 
-                    año_publicacion, paginas, descripcion, stock, ubicacion, fecha_registro, activo) 
+                    ano_publicacion, paginas, descripcion, stock, ubicacion, fecha_registro, activo) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), 1)";
             
             $stmt = $pdo->prepare($sql);

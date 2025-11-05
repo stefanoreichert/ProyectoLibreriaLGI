@@ -15,10 +15,10 @@ try {
     $stmt = $pdo->query("SELECT COUNT(*) FROM usuarios WHERE activo = 1");
     $total_usuarios = $stmt->fetchColumn();
     
-    $stmt = $pdo->query("SELECT COUNT(*) FROM prestamos WHERE fecha_devolucion IS NULL");
+    $stmt = $pdo->query("SELECT COUNT(*) FROM prestamos WHERE fecha_dev_real IS NULL");
     $prestamos_activos = $stmt->fetchColumn();
     
-    $stmt = $pdo->query("SELECT COUNT(*) FROM prestamos WHERE fecha_devolucion IS NULL AND fecha_limite < CURDATE()");
+    $stmt = $pdo->query("SELECT COUNT(*) FROM prestamos WHERE fecha_dev_real IS NULL AND fecha_devolucion < CURDATE()");
     $prestamos_vencidos = $stmt->fetchColumn();
     
 } catch (PDOException $e) {
@@ -75,27 +75,6 @@ include 'includes/header.php';
     <div class="quick-actions">
         <h2>Acciones Rápidas</h2>
         <div class="actions-grid">
-            <?php if (isBibliotecario()): ?>
-            <a href="libros/crear.php" class="action-btn">
-                <span class="action-icon">➕</span>
-                <span>Agregar Libro</span>
-            </a>
-            <?php endif; ?>
-            
-            <?php if (isAdmin()): ?>
-            <a href="usuarios/crear.php" class="action-btn">
-                <span class="action-icon">👤</span>
-                <span>Nuevo Usuario</span>
-            </a>
-            <?php endif; ?>
-            
-            <?php if (isBibliotecario()): ?>
-            <a href="prestamos/nuevo.php" class="action-btn">
-                <span class="action-icon">📋</span>
-                <span>Nuevo Préstamo</span>
-            </a>
-            <?php endif; ?>
-            
             <a href="libros/" class="action-btn">
                 <span class="action-icon">📚</span>
                 <span>Ver Catálogo</span>
@@ -105,6 +84,29 @@ include 'includes/header.php';
                 <span class="action-icon">📖</span>
                 <span><?php echo $_SESSION['rol'] === 'usuario' ? 'Mis Préstamos' : 'Todos los Préstamos'; ?></span>
             </a>
+            
+            <a href="prestamos/solicitar.php" class="action-btn">
+                <span class="action-icon">�</span>
+                <span>Solicitar Préstamo</span>
+            </a>
+            
+            <?php if (isBibliotecario()): ?>
+            <a href="libros/crear.php" class="action-btn">
+                <span class="action-icon">➕</span>
+                <span>Agregar Libro</span>
+            </a>
+            <a href="prestamos/nuevo.php" class="action-btn">
+                <span class="action-icon">�</span>
+                <span>Gestionar Préstamos</span>
+            </a>
+            <?php endif; ?>
+            
+            <?php if (isAdmin()): ?>
+            <a href="usuarios/crear.php" class="action-btn">
+                <span class="action-icon">�</span>
+                <span>Nuevo Usuario</span>
+            </a>
+            <?php endif; ?>
         </div>
     </div>
 </div>

@@ -54,11 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 actualizado_por = VALUES(actualizado_por), 
                 fecha_actualizacion = VALUES(fecha_actualizacion)
             ");
-            $stmt->execute([$clave, $valor, $_SESSION['usuario_id']]);
+            $stmt->execute([$clave, $valor, $_SESSION['user_id']]);
         }
         
         // Registrar en logs
-        registrarLog($_SESSION['usuario_id'], 'configuracion', 'actualizar', 'Configuración del sistema actualizada');
+        registrarLog($_SESSION['user_id'], 'configuracion', 'actualizar', 'Configuración del sistema actualizada');
         
         $mensaje = 'Configuración actualizada correctamente';
         

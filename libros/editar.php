@@ -74,7 +74,7 @@ if ($_POST && $libro) {
     if (empty($errors)) {
         try {
             $sql = "UPDATE libros SET titulo = ?, subtitulo = ?, autor = ?, isbn = ?, 
-                    categoria = ?, editorial = ?, año_publicacion = ?, paginas = ?, 
+                    categoria = ?, editorial = ?, ano_publicacion = ?, paginas = ?, 
                     descripcion = ?, stock = ?, ubicacion = ? WHERE id = ?";
             
             $stmt = $pdo->prepare($sql);
@@ -179,8 +179,8 @@ include '../includes/header.php';
         <div class="form-group">
             <label for="año_publicacion">Año de Publicación</label>
             <input type="number" id="año_publicacion" name="año_publicacion" 
-                   min="1000" max="<?php echo date('Y') + 1; ?>"
-                   value="<?php echo htmlspecialchars($_POST['año_publicacion'] ?? $libro['año_publicacion']); ?>">
+                   min="1900" max="<?php echo date('Y'); ?>" step="1"
+                   value="<?php echo htmlspecialchars($_POST['año_publicacion'] ?? $libro['ano_publicacion']); ?>">
         </div>
         
         <div class="form-group">

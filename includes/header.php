@@ -64,8 +64,9 @@ $base_path = '/ProyectoLibreriaLGI/';
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="<?php echo $base_path; ?>prestamos/">Mis préstamos</a></li>
+                        <li><a href="<?php echo $base_path; ?>prestamos/solicitar.php">Solicitar préstamo</a></li>
                         <?php if (isBibliotecario()): ?>
-                        <li><a href="<?php echo $base_path; ?>prestamos/nuevo.php">Nuevo préstamo</a></li>
+                        <li><a href="<?php echo $base_path; ?>prestamos/nuevo.php">Gestionar préstamos</a></li>
                         <li><a href="<?php echo $base_path; ?>reportes.php">Reportes</a></li>
                         <?php endif; ?>
                     </ul>
