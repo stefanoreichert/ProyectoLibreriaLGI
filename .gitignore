@@ -1,0 +1,51 @@
+# Archivos y directorios a ignorar
+
+# Configuración de desarrollo local (mantener el .example)
+config/database.php
+!config/database.php.example
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Cache
+cache/
+temp/
+
+# Archivos de backup
+*.bak
+*.backup
+*.sql.backup
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de Windows
+ehthumbs.db
+Desktop.ini
+
+# Archivos de Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Node modules (si se usan en el futuro)
+node_modules/
+
+# Composer (si se usa en el futuro)
+vendor/
+composer.lock
+
+# Archivos de sesión de PHP
+sess_*
+
+# Archivos temporales
+*.tmp
+*.temp
