@@ -4,14 +4,11 @@ require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/config/config.php';
 
 
-
-
-
 verificarSesion();
 verificarRol(['admin', 'bibliotecario']);
 
 $titulo = 'Reportes del Sistema';
-include '../includes/header.php';
+include __DIR__ . '/includes/header.php';
 
 // Obtener parámetros de filtro
 $fecha_desde = $_GET['fecha_desde'] ?? date('Y-m-01');
@@ -619,4 +616,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<?php include '../includes/footer.php'; ?>
+<?php include __DIR__ . '/includes/footer.php'; ?>
