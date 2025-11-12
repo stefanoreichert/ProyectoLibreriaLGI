@@ -271,3 +271,21 @@ LEFT JOIN prestamos p ON u.id = p.usuario_id
 WHERE u.activo = 1
 GROUP BY u.id, u.nombre, u.email
 ORDER BY total_prestamos DESC;
+
+-- Tabla de contactos
+CREATE TABLE contactos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    nombre VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    asunto VARCHAR(255) NOT NULL,
+    mensaje TEXT NOT NULL,
+    fecha_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    estado ENUM('pendiente', 'en_proceso', 'resuelto') DEFAULT 'pendiente',
+    respuesta TEXT,
+    fecha_respuesta TIMESTAMP NULL,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    INDEX idx_usuario_id (usuario_id),
+    INDEX idx_estado (estado),
+    INDEX idx_fecha_envio (fecha_envio)
+);

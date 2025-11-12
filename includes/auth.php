@@ -1,7 +1,7 @@
 <?php
 // Incluir archivos de configuración si no están incluidos
 if (!isset($pdo)) {
-    require_once(__DIR__ . '/../config/database.php');
+    require_once(__DIR__ . '/../config/config.php');
 }
 
 if (!defined('SITE_NAME')) {
