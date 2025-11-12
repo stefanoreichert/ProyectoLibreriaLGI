@@ -1,7 +1,8 @@
 <?php
 session_start();
 require_once '../includes/auth.php';
-require_once '../config/database.php';
+require_once __DIR__ . '/../config/config.php'; 
+
 
 $page_title = 'Detalle del Préstamo';
 $prestamo = null;

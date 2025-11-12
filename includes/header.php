@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
 
+
 // Determinar ruta base del proyecto
 $base_path = '/ProyectoLibreriaLGI/';
 ?>

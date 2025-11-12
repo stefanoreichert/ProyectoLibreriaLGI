@@ -1,7 +1,9 @@
 <?php
 session_start();
 require_once '../includes/auth.php';
-require_once '../config/database.php';
+require_once __DIR__ . '/../config/config.php';
+
+
 
 // Solo bibliotecarios y admins pueden ver la lista de usuarios
 if (!isBibliotecario()) {
