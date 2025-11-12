@@ -7,6 +7,7 @@ require_once __DIR__ . '/../config/config.php';
 $page_title = 'Detalle del Préstamo';
 $prestamo = null;
 
+
 // Obtener ID del préstamo
 $prestamo_id = intval($_GET['prestamo_id'] ?? 0);
 

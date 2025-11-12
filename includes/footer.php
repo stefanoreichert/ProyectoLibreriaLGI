@@ -20,8 +20,8 @@
             <div class="footer-section">
                 <h4>Soporte</h4>
                 <ul>
-                    <li><a href="docs/README.md">Documentación</a></li>
-                    <li><a href="mailto:soporte@libreria-lgi.com">Contacto</a></li>
+                    <li><a href="/ProyectoLibreriaLGI/documentacion.php">Documentación</a></li>
+                    <li><a href="/ProyectoLibreriaLGI/contacto.php">Contacto</a></li>
                 </ul>
             </div>
         </div>
