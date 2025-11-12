@@ -1,7 +1,9 @@
 <?php
 session_start();
-require_once __DIR__ . '/../includes/auth.php';
+require_once '../includes/auth.php';
 require_once __DIR__ . '/../config/config.php';
+
+
 
 $page_title = 'Detalle del Usuario';
 $usuario_data = null;

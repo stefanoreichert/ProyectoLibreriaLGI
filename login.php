@@ -2,6 +2,8 @@
 session_start();
 require_once __DIR__ . '/config/config.php';
 
+
+
 $error = '';
 
 if ($_POST) {
