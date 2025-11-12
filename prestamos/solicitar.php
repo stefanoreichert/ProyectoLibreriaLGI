@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../includes/auth.php';
-require_once '../config/database.php';
+require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../config/config.php';
 
 // Todos los usuarios logueados pueden solicitar préstamos
 verificarSesion();

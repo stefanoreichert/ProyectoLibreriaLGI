@@ -1,5 +1,7 @@
 <?php
-// Configuraciones generales del sistema para la librería
+// -------------------------------------------------------------
+// CONFIGURACIÓN GENERAL DEL SISTEMA
+// -------------------------------------------------------------
 define('SITE_NAME', 'Sistema de Librería LGI');
 define('SITE_VERSION', '1.0.0');
 define('DEVELOPED_BY', 'Equipo LGI');
@@ -21,7 +23,9 @@ define('MAX_FILE_SIZE', 2097152); // 2MB en bytes
 // Configuraciones de seguridad
 define('SESSION_TIMEOUT', 7200); // 2 horas en segundos
 
-//esto hace que la configuracion sea un array multidimensional para facilitar su acceso
+// -------------------------------------------------------------
+// ARRAY MULTIDIMENSIONAL DE CONFIGURACIÓN
+// -------------------------------------------------------------
 $config = [
     'app' => [
         'name' => SITE_NAME,
@@ -43,7 +47,9 @@ $config = [
     ]
 ];
 
-// Función para obtener configuración
+// -------------------------------------------------------------
+// FUNCIONES AUXILIARES
+// -------------------------------------------------------------
 function getConfig($key = null) {
     global $config;
     
@@ -61,11 +67,9 @@ function getConfig($key = null) {
             return null;
         }
     }
-    
     return $value;
 }
 
-// Funciones auxiliares
 function formatDate($date, $format = 'd/m/Y') {
     return date($format, strtotime($date));
 }
@@ -80,4 +84,43 @@ function calculateDaysDifference($date1, $date2) {
     $interval = $datetime1->diff($datetime2);
     return $interval->days;
 }
+
+// -------------------------------------------------------------
+// CONEXIÓN A BASE DE DATOS (LOCAL o RAILWAY)
+// -------------------------------------------------------------
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+// --- CONEXIÓN DIRECTA A RAILWAY ---
+$DB_URL = 'mysql://root:VHOSNLdxIIJJtfRLNxlgGMrAgrYTbJiZ@shortline.proxy.rlwy.net:44928/railway';
+$parts = parse_url($DB_URL);
+
+define('DB_HOST', $parts['host']);
+define('DB_USER', $parts['user']);
+define('DB_PASS', $parts['pass']);
+define('DB_NAME', ltrim($parts['path'], '/'));
+define('DB_PORT', $parts['port'] ?? 3306);
+
+
+// Crear conexión
+//$conexion = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
+//$conexion->set_charset('utf8mb4');
+
+try {
+    $pdo = new PDO(
+        "mysql:host=".DB_HOST.";port=".DB_PORT.";dbname=".DB_NAME.";charset=utf8mb4",
+        DB_USER,
+        DB_PASS,
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]
+    );
+} catch (PDOException $e) {
+    die("❌ Error de conexión PDO: " . $e->getMessage());
+}
+
+// Verificar conexión
+//if ($conexion->connect_errno) {
+  //  die('❌ Error al conectar con la base de datos: ' . $conexion->connect_error);
+//}
 ?>
