@@ -109,7 +109,7 @@ if ($_POST && $usuario_data) {
         try {
             if (!empty($password)) {
                 // Actualizar con nueva contraseña
-                $password_hash = password_hash($password, PASSWORD_DEFAULT);
+                $password_hash = password($password, PASSWORD_DEFAULT);
                 $sql = "UPDATE usuarios SET nombre_completo = ?, usuario = ?, email = ?, password = ?, 
                         rol = ?, telefono = ?, dni = ?, direccion = ? WHERE id = ?";
                 $params = [

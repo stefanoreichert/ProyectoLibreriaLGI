@@ -65,7 +65,7 @@ if ($_POST) {
     // Si no hay errores, insertar usuario
     if (empty($errors)) {
         try {
-            $password_hash = password_hash($password, PASSWORD_DEFAULT);
+            $password_hash = password($password, PASSWORD_DEFAULT);
 
             $sql = "INSERT INTO usuarios 
                     (nombre_completo, usuario, email, password, rol, telefono, dni, direccion, fecha_registro, activo)
